@@ -32,5 +32,11 @@ class WordCountMapTest extends FunSpec with ShouldMatchers with HadoopImplicitCo
       mapDriver.withInput(1, "")
       mapDriver.runTest()
     }
+
+    it("should be able to handle lots of whitespace appropriately") {
+      mapDriver.withInput(1, "testing      one      testing")
+      mapDriver.withOutput("testing", 2).withOutput("one", 1)
+      mapDriver.runTest()
+    }
   }
 }
