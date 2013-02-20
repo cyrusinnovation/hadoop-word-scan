@@ -12,14 +12,13 @@ class WordCountMap extends Mapper[LongWritable, Text, Text, IntWritable] {
   type MapperContext = Mapper[LongWritable, Text, Text, IntWritable]#Context
 
   override def map(key: LongWritable, value: Text, context: MapperContext):Unit = {
-
-    /*def wordsToCounts = value.toString.split(" ").groupBy(word => word).mapValues(_.size)
+    def wordsToCounts = value.toString.split(" ").groupBy(word => word).mapValues(_.size)
 
     wordsToCounts.foreach{ tuple =>
       word.set(tuple._1)
       count.set(tuple._2)
       context.write(word, count)
-    }     */
+    }
   }
 
 }
