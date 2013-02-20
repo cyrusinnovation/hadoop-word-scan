@@ -3,18 +3,20 @@ package com.app
 import org.scalatest.{BeforeAndAfter, FunSpec}
 import org.scalatest.matchers.ShouldMatchers
 import org.apache.hadoop.mrunit.TestDriver
+import org.apache.hadoop.conf.Configuration
 
 trait HadoopTestCase[KEYIN, VALUEIN, KEYOUT, VALUEOUT] extends FunSpec with ShouldMatchers with HadoopImplicitConversions with BeforeAndAfter {
-  val mapDriver: TestDriver[KEYIN, VALUEIN, KEYOUT, VALUEOUT]
+  val driver: TestDriver[KEYIN, VALUEIN, KEYOUT, VALUEOUT]
 
   before {
-    mapDriver.getConfiguration.setQuietMode(false)
+    driver.setConfiguration(new Configuration(false))
+    driver.getConfiguration.setQuietMode(false)
     setupDriver()
   }
 
   def setupDriver()
 
   after {
-    mapDriver.resetOutput()
+    driver.resetOutput()
   }
 }
