@@ -1,29 +1,17 @@
 package com.app
 
-import org.scalatest.{BeforeAndAfter, FunSpec}
 import org.apache.hadoop.mrunit.mapreduce.MapDriver
 
-import org.scalatest.matchers.ShouldMatchers
 import org.slf4j.LoggerFactory
 import org.apache.hadoop.io.{IntWritable, LongWritable, Text}
 import org.apache.hadoop.conf.Configuration
 
-class WordCountMapTest extends FunSpec with ShouldMatchers with HadoopImplicitConversions with BeforeAndAfter {
+class WordCountMapTest extends HadoopTestCase[LongWritable, Text, Text, IntWritable] {
   val logger = LoggerFactory.getLogger(classOf[WordCountMapTest])
-  val mapper = new WordCountMap
-  val mapDriver = new MapDriver[LongWritable, Text, Text, IntWritable]()
-
-  before {
-    mapDriver.getConfiguration.setQuietMode(false)
-    mapDriver.setMapper(mapper)
-  }
-
-  after {
-    mapDriver.resetOutput()
-  }
+  override val mapDriver = new MapDriver[LongWritable, Text, Text, IntWritable]()
 
   describe ("A default word counter") {
-    it("should be able to count the occurences of all words in an input") {
+    it("should be able to count the occurrences of all words in an input") {
       mapDriver.withInput(1, "testing testing one one testing false")
       mapDriver.withOutput("false", 1).withOutput("testing", 3).withOutput("one", 2)
       mapDriver.runTest()
@@ -51,5 +39,9 @@ class WordCountMapTest extends FunSpec with ShouldMatchers with HadoopImplicitCo
       mapDriver.withOutput("foo", 2).withOutput("bar", 3)
       mapDriver.runTest()
     }
+  }
+
+  def setupDriver() {
+    mapDriver.setMapper(new WordCountMap)
   }
 }
