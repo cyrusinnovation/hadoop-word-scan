@@ -13,7 +13,7 @@ class WordCountReducerTest extends HadoopTestCase[Text, IntWritable, Text, IntWr
 
   describe ("Word count reducer") {
     it("should just get single value") {
-      val dogValues = List(new IntWritable(5))
+      val dogValues: List[IntWritable] = List(5)
 
       driver.withInput("dog", dogValues)
       driver.withOutput("dog", 5)
@@ -22,7 +22,7 @@ class WordCountReducerTest extends HadoopTestCase[Text, IntWritable, Text, IntWr
     }
 
     it("should sum multiple values") {
-      val dogValues = List(new IntWritable(5), new IntWritable(11))
+      val dogValues: List[IntWritable] = List(5, 11)
 
       driver.withInput("dog", dogValues)
       driver.withOutput("dog", 16)
