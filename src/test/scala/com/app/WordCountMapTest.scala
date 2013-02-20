@@ -22,5 +22,15 @@ class WordCountMapTest extends FunSpec with ShouldMatchers with HadoopImplicitCo
       mapDriver.withOutput("false", 1).withOutput("testing", 3).withOutput("one", 2)
       mapDriver.runTest()
     }
+
+    it("should be able to handle an empty input") {
+      val mapper: Mapper[LongWritable, Text, Text, IntWritable] = new WordCountMap
+      val mapDriver = new MapDriver[LongWritable, Text, Text, IntWritable]()
+      mapDriver.getConfiguration.setQuietMode(false)
+      mapDriver.setMapper(mapper)
+
+      mapDriver.withInput(1, "")
+      mapDriver.runTest()
+    }
   }
 }
