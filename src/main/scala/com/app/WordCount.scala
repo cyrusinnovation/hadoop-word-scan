@@ -11,10 +11,12 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat
 object WordCount {
 
   def main (args: Array[String]) {
-    val conf: Configuration = new Configuration
+    val input =  args(0)
+    val output = args(1)
 
-    val input = util.Arrays.copyOfRange(args, 0, args.length - 1)
-    val output = args(args.length - 1)
+    val searchStrings = args.drop(2)
+    val conf: Configuration = new Configuration
+    conf.setStrings(WordCountMap.SEARCH_STRINGS_KEY, searchStrings:_*)
 
     val job: Job = new Job(conf)
 
@@ -27,7 +29,7 @@ object WordCount {
 
     val outputPath: Path = new Path(output)
 
-    FileInputFormat.addInputPath(job, new Path(input(0)))
+    FileInputFormat.addInputPath(job, new Path(input))
 
     FileOutputFormat.setOutputPath(job, outputPath)
     outputPath.getFileSystem(conf).delete(outputPath, true)
